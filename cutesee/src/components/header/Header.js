@@ -12,7 +12,7 @@ class Header extends React.Component {
 				</div>
         <div className="row justify-content-center">
 					<div id="subtitle" className="col-12 text-center">
-            <p>Relieve stress with CUTE pictures</p>
+            <p>Relieve stress with pictures of CUTE things <span role="img" aria-labelledby="smile emoji">😊</span></p>
 					</div>
 				</div>
 			</header>
