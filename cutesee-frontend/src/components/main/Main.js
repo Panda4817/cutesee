@@ -13,7 +13,10 @@ import ImageList from '../imageList/ImageList'
 
 
 class Main extends React.Component {
-    state = { images: [] };
+    state = { 
+        images: [],
+        noHits: false
+    };
 
 
 	onSearchSubmit = async (term) => {
@@ -31,6 +34,7 @@ class Main extends React.Component {
         console.log(diff);
         if (cachedHits && diff < 1) {
             this.setState({ images: JSON.parse(cachedHits) });
+            this.setState({noHits: false});
         } else {
             if (cachedHits) {
                 localStorage.removeItem(term);
@@ -39,9 +43,14 @@ class Main extends React.Component {
             try {
                 const response = await axios.get(`/api/${term}`);
                 console.log(response);
-                localStorage.setItem(term, JSON.stringify(response.data.hits));
-                localStorage.setItem(dateKey, JSON.stringify({'date': new Date()}));
-                this.setState({ images: response.data.hits});
+                if (response.data.hits.length > 0) {
+                    localStorage.setItem(term, JSON.stringify(response.data.hits));
+                    localStorage.setItem(dateKey, JSON.stringify({'date': new Date()}));
+                    this.setState({ images: response.data.hits});
+                } else {
+                    this.setState({ images: []});
+                    this.setState({noHits: true}); 
+                }
             }catch (error) {
                 console.log(error);
             }    
@@ -70,7 +79,7 @@ class Main extends React.Component {
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-12">
-                        <ImageList foundImages={this.state.images} />
+                        <ImageList foundImages={this.state.images} hits={this.state.noHits} />
                     </div>
                 </div>
             </div>

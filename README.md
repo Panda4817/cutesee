@@ -1,10 +1,11 @@
 # CuteSee - React + Express Web App
 
 An application that lets you search for pictures of cute things using Pixabay API.
-The appliction is split into React frontend and Node.js with Express backend for API calls. 
+The appliction is split into React frontend and Node.js with Express backend for API calls.
+
+The application requires a Pixabay API key.
 
 ## Usage
 
-To run the application on local machine you need to start both frontend and backend.
-Frontend: `yarn start` and Backend: `npm start`.
-Frontend starts on port 3000 and backend on 3001.
+To run the application on local machine you need to only start backend using `npm start` on port 3000.
+If you make any changes to the frontend, do `yarn build` and restart backend.
