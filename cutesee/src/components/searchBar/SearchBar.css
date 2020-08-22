@@ -1,0 +1,18 @@
+#searchButton {
+    color: whitesmoke;
+    background-color: #28a745;
+}
+.searchIcon:hover {
+    transform: scale(1.5);
+}
+
+#searchBox {
+    border: 5px solid #28a745 !important;
+
+}
+
+#searchBox:focus {
+    outline: none !important;
+    box-shadow: none !important;
+   
+}

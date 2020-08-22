@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
+header {
+    flex-grow: 0;
+    color: whitesmoke;
+}
+
+#title > h1 {
+    font-family: "Lobster", "Josefin Sans", Helvetica, Arial, sans-serif;
+    font-size: 4em;
+    padding: 10px;
+}
+#subtitle > p {
+    font-family: 'Comfortaa', cursive;
+    padding: 10px;
+}

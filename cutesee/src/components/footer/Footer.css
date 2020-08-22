@@ -1,0 +1,9 @@
+footer {
+    flex-grow: 0;
+}
+#footer_text {
+    color: whitesmoke;
+    font-family: 'Comfortaa', cursive;
+    font-size: 1em;
+    padding: 10px;
+}

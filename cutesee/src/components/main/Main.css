@@ -1,0 +1,5 @@
+#main {
+    flex-grow: 1;
+    padding: 10px;
+    min-height: 100vh !important;
+}
