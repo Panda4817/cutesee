@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 //import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
-import SearchBar from '/home/kanta/cutesee/cutesee/src/components/searchBar/SearchBar'
-import Suggestions from '/home/kanta/cutesee/cutesee/src/components/suggestions/Suggestions'
-import ImageList from '/home/kanta/cutesee/cutesee/src/components/imageList/ImageList'
+import SearchBar from '../searchBar/SearchBar';
+import Suggestions from '../suggestions/Suggestions'
+import ImageList from '../imageList/ImageList'
 
 /*const server = axios.create({
     baseURL: '/api',
