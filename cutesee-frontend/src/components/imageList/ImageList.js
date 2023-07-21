@@ -8,7 +8,7 @@ const ImageList = (props) => {
             </div> 
         )
     }); 
-    if (imgs.length == 0 && props.hits == true) {
+    if (imgs.length === 0 && props.hits === true) {
         let noHitsMsg = (<p>(≥o≤) Sorry, Pixabay cannot find any images. Try the suggestions. :)</p>);
         return noHitsMsg;
     }

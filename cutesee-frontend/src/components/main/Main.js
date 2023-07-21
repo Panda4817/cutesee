@@ -4,6 +4,11 @@ import axios from 'axios';
 import SearchBar from '../searchBar/SearchBar';
 import Suggestions from '../suggestions/Suggestions';
 import ImageList from '../imageList/ImageList';
+import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+import '@tensorflow/tfjs-core';
+// Register WebGL backend.
+import '@tensorflow/tfjs-backend-webgl';
+import '@mediapipe/face_mesh';
 
 /*const server = axios.create({
     baseURL: '/api',
@@ -17,6 +22,23 @@ class Main extends React.Component {
         images: [],
         noHits: false
     };
+    model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
+    detectorConfig = {
+        runtime: 'tfjs',
+    };
+
+    detectFaces = async (imgObj) => {
+        const image = new Image(imgObj.webformatWidth, imgObj.webformatHeight);
+        image.src = imgObj.webformatURL;
+        image.crossOrigin = 'anonymous';
+        const detector = await faceLandmarksDetection.createDetector(this.model, this.detectorConfig);
+        const faces = await detector.estimateFaces(image);
+        detector.dispose()
+        if (faces.length > 0) {
+            return true;
+        }
+        return false;
+    }
 
 
 	onSearchSubmit = async (term) => {
@@ -24,14 +46,14 @@ class Main extends React.Component {
         const now = new Date();
         const dateKey = `${term} date`;
         const lastStored = localStorage.getItem(dateKey);
-        console.log(lastStored);
         let diff = 1;
         if (lastStored !== null) {
+            console.log(lastStored)
             var obj = JSON.parse(lastStored);
             var oldDate = new Date(obj['date']);
             diff = (now.getTime() - oldDate.getTime())/(86400000);
-        }   
-        console.log(diff);
+            console.log(diff);
+        }
         if (cachedHits && diff < 1) {
             this.setState({ images: JSON.parse(cachedHits) });
             this.setState({noHits: false});
@@ -43,10 +65,24 @@ class Main extends React.Component {
             try {
                 const response = await axios.get(`/api/${term}`);
                 console.log(response);
+                let count = 0;
                 if (response.data.hits.length > 0) {
-                    localStorage.setItem(term, JSON.stringify(response.data.hits));
-                    localStorage.setItem(dateKey, JSON.stringify({'date': new Date()}));
-                    this.setState({ images: response.data.hits});
+                    let filteredImages = [];
+                    for (let imgObj of response.data.hits) {
+                        const filterOut = await this.detectFaces(imgObj);
+                        if (!filterOut) {
+                            filteredImages.push(imgObj)
+                            localStorage.setItem(term, JSON.stringify(filteredImages));
+                            localStorage.setItem(dateKey, JSON.stringify({'date': new Date()}));
+                            this.setState({ images: filteredImages});
+                            count += 1;
+                        }
+                        // Limit to max 50 pictures as detecting faces through tensorflow.js is slow
+                        if (count === 50) {
+                            break;
+                        }
+                    }
+                    console.log(filteredImages)
                 } else {
                     this.setState({ images: []});
                     this.setState({noHits: true}); 
